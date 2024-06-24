@@ -1,8 +1,5 @@
 blank_issues_enabled: false
 contact_links:
   - name: Support
-    url: https://example.com/support
-    about: If you have any support questions, please visit our support page.
-  - name: Documentation
-    url: https://example.com/documentation
-    about: For more information, check out our documentation.
+    url: https://discord.gg/aaXAX9z
+    about: If you have any support questions, please join the discord server.
