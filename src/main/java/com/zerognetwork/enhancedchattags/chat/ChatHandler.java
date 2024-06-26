@@ -2,6 +2,9 @@ package com.zerognetwork.enhancedchattags.chat;
 
 import com.zerognetwork.enhancedchattags.EnhancedChatTags;
 import com.zerognetwork.enhancedchattags.config.EnhancedChatTagsConfig;
+import com.zerognetwork.enhancedchattags.util.ColorUtil;
+import com.zerognetwork.enhancedchattags.util.LuckPermsCache;
+import com.zerognetwork.enhancedchattags.util.PlaceholderManager;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.event.ServerChatEvent;
@@ -16,24 +19,19 @@ public class ChatHandler {
         ServerPlayer player = event.getPlayer();
         String message = event.getMessage().getString();
         
-        String prefix = "";
-        String suffix = "";
-
+        String formattedMessage = EnhancedChatTagsConfig.CHAT_FORMAT.get();
+        
         if (EnhancedChatTags.isLuckPermsLoaded) {
-            try {
-                net.luckperms.api.LuckPerms api = net.luckperms.api.LuckPermsProvider.get();
-                prefix = api.getPlayerAdapter(ServerPlayer.class).getMetaData(player).getPrefix();
-                suffix = api.getPlayerAdapter(ServerPlayer.class).getMetaData(player).getSuffix();
-            } catch (Exception e) {
-                EnhancedChatTags.LOGGER.error("Error getting LuckPerms data: ", e);
+            LuckPermsCache.UserData userData = LuckPermsCache.getUserData(player.getUUID());
+            if (userData != null) {
+                formattedMessage = formattedMessage.replace("{prefix}", userData.prefix != null ? userData.prefix : "")
+                                                   .replace("{suffix}", userData.suffix != null ? userData.suffix : "");
             }
         }
-
-        String formattedMessage = EnhancedChatTagsConfig.CHAT_FORMAT.get()
-                .replace("%prefix%", prefix != null ? prefix : "")
-                .replace("%player%", player.getName().getString())
-                .replace("%suffix%", suffix != null ? suffix : "")
-                .replace("%message%", message);
+        
+        formattedMessage = formattedMessage.replace("{message}", message);
+        formattedMessage = PlaceholderManager.applyPlaceholders(formattedMessage, player);
+        formattedMessage = ColorUtil.translateColorCodes(formattedMessage);
 
         event.setMessage(Component.literal(formattedMessage));
     }

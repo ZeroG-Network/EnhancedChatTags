@@ -1,6 +1,9 @@
 package com.zerognetwork.enhancedchattags;
 
 import com.zerognetwork.enhancedchattags.config.EnhancedChatTagsConfig;
+import com.zerognetwork.enhancedchattags.util.LuckPermsCache;
+import com.zerognetwork.enhancedchattags.util.PlaceholderManager;
+import com.zerognetwork.enhancedchattags.util.VersionChecker;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
@@ -25,7 +28,11 @@ public class EnhancedChatTags {
         isLuckPermsLoaded = checkLuckPermsLoaded();
         if (!isLuckPermsLoaded) {
             LOGGER.warn("LuckPerms not found. Some features may be limited.");
+        } else {
+            LuckPermsCache.initialize();
         }
+        PlaceholderManager.loadCustomPlaceholders(EnhancedChatTagsConfig.SPEC);
+        VersionChecker.checkVersions();
     }
 
     private boolean checkLuckPermsLoaded() {
