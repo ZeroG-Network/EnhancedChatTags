@@ -1,0 +1,16 @@
+[chat]
+format = "{prefix} {name}: {message} {suffix}"
+
+[tags]
+enabled = true
+tag_format = "{prefix} {name} {suffix}"
+tag_position = "above"
+
+[conditional_prefix]
+vip = "§b[VIP]"
+default = "§7[Player]"
+
+[conditional_tags]
+admin = "§4[Admin]"
+moderator = "§2[Mod]"
+default = "§7[Player]"
