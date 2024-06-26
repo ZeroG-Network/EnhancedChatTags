@@ -1,11 +1,11 @@
 plugins {
     id 'eclipse'
     id 'maven-publish'
-    id 'net.minecraftforge.gradle' version '6.0.+'
+    id 'net.minecraftforge.gradle' version '5.1.+'
 }
 
-version = '1.20.1'
-group = 'com.MrWhiteFlamesYT.EnhancedChatTags'
+version = '1.0.0'
+group = 'com.zerognetwork.enhancedchattags'
 archivesBaseName = 'EnhancedChatTags'
 
 java.toolchain.languageVersion = JavaLanguageVersion.of(17)
@@ -38,37 +38,13 @@ minecraft {
                 }
             }
         }
-
-        gameTestServer {
-            workingDirectory project.file('run')
-            property 'forge.logging.markers', 'REGISTRIES'
-            property 'forge.logging.console.level', 'debug'
-            property 'forge.enabledGameTestNamespaces', 'EnhancedChatTags'
-            mods {
-                enhancedchattags {
-                    source sourceSets.main
-                }
-            }
-        }
-
-        data {
-            workingDirectory project.file('run')
-            property 'forge.logging.markers', 'REGISTRIES'
-            property 'forge.logging.console.level', 'debug'
-            args '--mod', 'enhancedchattags', '--all', '--output', file('src/generated/resources/'), '--existing', file('src/main/resources/')
-            mods {
-                enhancedchattags {
-                    source sourceSets.main
-                }
-            }
-        }
     }
 }
 
 sourceSets.main.resources { srcDir 'src/generated/resources' }
 
 dependencies {
-    minecraft 'net.minecraftforge:forge:1.20.1-47.2.20'
+    minecraft 'net.minecraftforge:forge:1.20.1-47.2.0'
     compileOnly 'net.luckperms:api:5.4'
 }
 
@@ -76,11 +52,11 @@ jar {
     manifest {
         attributes([
                 "Specification-Title"     : "EnhancedChatTags",
-                "Specification-Vendor"    : "MrWhiteFlamesYT",
+                "Specification-Vendor"    : "ZeroG Network",
                 "Specification-Version"   : "1",
                 "Implementation-Title"    : project.name,
                 "Implementation-Version"  : project.jar.archiveVersion,
-                "Implementation-Vendor"   : "MrWhiteFlamesYT",
+                "Implementation-Vendor"   : "ZeroG Network",
                 "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
         ])
     }

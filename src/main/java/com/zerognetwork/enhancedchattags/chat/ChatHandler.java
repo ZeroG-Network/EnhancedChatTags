@@ -1,7 +1,7 @@
-package com.MrWhiteFlamesYT.EnhancedChatTags.chat;
+package com.zerognetwork.enhancedchattags.chat;
 
-import com.MrWhiteFlamesYT.EnhancedChatTags.EnhancedChatTags;
-import com.MrWhiteFlamesYT.EnhancedChatTags.config.EnhancedChatTagsConfig;
+import com.zerognetwork.enhancedchattags.EnhancedChatTags;
+import com.zerognetwork.enhancedchattags.config.EnhancedChatTagsConfig;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.event.ServerChatEvent;

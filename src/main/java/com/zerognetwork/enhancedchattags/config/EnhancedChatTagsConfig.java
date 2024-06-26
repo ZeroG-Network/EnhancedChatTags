@@ -1,4 +1,4 @@
-package com.MrWhiteFlamesYT.EnhancedChatTags.config;
+package com.zerognetwork.enhancedchattags.config;
 
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.fml.ModLoadingContext;

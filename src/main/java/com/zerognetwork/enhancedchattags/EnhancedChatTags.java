@@ -1,6 +1,6 @@
-package com.MrWhiteFlamesYT.EnhancedChatTags;
+package com.zerognetwork.enhancedchattags;
 
-import com.MrWhiteFlamesYT.EnhancedChatTags.config.EnhancedChatTagsConfig;
+import com.zerognetwork.enhancedchattags.config.EnhancedChatTagsConfig;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
