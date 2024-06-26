@@ -1,7 +1,7 @@
 plugins {
     id 'eclipse'
     id 'maven-publish'
-    id 'net.minecraftforge.gradle' version '5.1.+'
+    id 'net.minecraftforge.gradle' version '6.0.+'
 }
 
 version = '1.0.0'
@@ -11,6 +11,7 @@ archivesBaseName = 'EnhancedChatTags'
 java.toolchain.languageVersion = JavaLanguageVersion.of(17)
 
 println "Java: ${System.getProperty 'java.version'}, JVM: ${System.getProperty 'java.vm.version'} (${System.getProperty 'java.vendor'}), Arch: ${System.getProperty 'os.arch'}"
+
 minecraft {
     mappings channel: 'official', version: '1.20.1'
 
@@ -38,10 +39,42 @@ minecraft {
                 }
             }
         }
+
+        gameTestServer {
+            workingDirectory project.file('run')
+            property 'forge.logging.markers', 'REGISTRIES'
+            property 'forge.logging.console.level', 'debug'
+            property 'forge.enabledGameTestNamespaces', 'EnhancedChatTags'
+            mods {
+                enhancedchattags {
+                    source sourceSets.main
+                }
+            }
+        }
+
+        data {
+            workingDirectory project.file('run')
+            property 'forge.logging.markers', 'REGISTRIES'
+            property 'forge.logging.console.level', 'debug'
+            args '--mod', 'enhancedchattags', '--all', '--output', file('src/generated/resources/'), '--existing', file('src/main/resources/')
+            mods {
+                enhancedchattags {
+                    source sourceSets.main
+                }
+            }
+        }
     }
 }
 
 sourceSets.main.resources { srcDir 'src/generated/resources' }
+
+repositories {
+    mavenCentral()
+    maven {
+        name = 'spongepowered-repo'
+        url = 'https://repo.spongepowered.org/maven'
+    }
+}
 
 dependencies {
     minecraft 'net.minecraftforge:forge:1.20.1-47.2.0'
@@ -51,18 +84,20 @@ dependencies {
 jar {
     manifest {
         attributes([
-                "Specification-Title"     : "EnhancedChatTags",
-                "Specification-Vendor"    : "ZeroG Network",
-                "Specification-Version"   : "1",
-                "Implementation-Title"    : project.name,
-                "Implementation-Version"  : project.jar.archiveVersion,
-                "Implementation-Vendor"   : "ZeroG Network",
-                "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
+            "Specification-Title"     : "EnhancedChatTags",
+            "Specification-Vendor"    : "ZeroG Network",
+            "Specification-Version"   : "1",
+            "Implementation-Title"    : project.name,
+            "Implementation-Version"  : project.jar.archiveVersion,
+            "Implementation-Vendor"   : "ZeroG Network",
+            "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
         ])
     }
 }
 
-jar.finalizedBy('reobfJar')
+tasks.named('jar', Jar).configure {
+    finalizedBy 'reobfJar'
+}
 
 publishing {
     publications {
