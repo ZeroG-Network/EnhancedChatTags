@@ -10,8 +10,9 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.api.distmarker.Dist;
 
-@Mod.EventBusSubscriber(modid = EnhancedChatTags.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
+@Mod.EventBusSubscriber(modid = EnhancedChatTags.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE, value = Dist.DEDICATED_SERVER)
 public class TagHandler {
 
     @SubscribeEvent
@@ -37,10 +38,5 @@ public class TagHandler {
 
         player.setCustomName(Component.literal(formattedTag));
         player.setCustomNameVisible(true);
-
-        // Set tag position
-        if (EnhancedChatTagsConfig.TAG_POSITION.get() == EnhancedChatTagsConfig.TagPosition.BELOW) {
-            player.getEntityData().set(net.minecraft.world.entity.Entity.DATA_CUSTOM_NAME_VISIBLE, true);
-        }
     }
 }

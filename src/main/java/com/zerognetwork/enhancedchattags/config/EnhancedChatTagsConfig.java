@@ -1,14 +1,18 @@
 package com.zerognetwork.enhancedchattags.config;
 
+import com.electronwill.nightconfig.core.file.CommentedFileConfig;
+import com.electronwill.nightconfig.core.io.WritingMode;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.loading.FMLPaths;
 
 import java.nio.file.Path;
+import java.util.HashMap;
+import java.util.Map;
 
 public class EnhancedChatTagsConfig {
-    private static ForgeConfigSpec SPEC;
+    public static ForgeConfigSpec SPEC;
     public static ForgeConfigSpec.ConfigValue<String> CHAT_FORMAT;
     public static ForgeConfigSpec.ConfigValue<String> TAG_FORMAT;
     public static ForgeConfigSpec.BooleanValue ENABLE_TAGS;
@@ -45,6 +49,18 @@ public class EnhancedChatTagsConfig {
 
     public static void reload() {
         Path configPath = FMLPaths.CONFIGDIR.get().resolve("enhancedchattags/enhancedchattags.toml");
-        SPEC.setConfig(new net.minecraftforge.common.ForgeConfigSpec.Builder().build().buildFrozenConfiguration(configPath));
+        CommentedFileConfig configData = CommentedFileConfig.builder(configPath)
+                .sync()
+                .autosave()
+                .writingMode(WritingMode.REPLACE)
+                .build();
+        configData.load();
+        SPEC.setConfig(configData);
+    }
+
+    public static Map<String, String> getCustomPlaceholders() {
+        // Implement this method to return your custom placeholders
+        // For now, we'll return an empty map. You can expand this later.
+        return new HashMap<>();
     }
 }

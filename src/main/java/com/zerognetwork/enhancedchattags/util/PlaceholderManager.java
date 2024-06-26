@@ -1,6 +1,7 @@
 package com.zerognetwork.enhancedchattags.util;
 
 import com.zerognetwork.enhancedchattags.config.EnhancedChatTagsConfig;
+import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraft.world.entity.player.Player;
 
 import java.util.HashMap;
@@ -12,7 +13,7 @@ public class PlaceholderManager {
 
     static {
         // Register default placeholders
-        registerPlaceholder("name", Player::getName);
+        registerPlaceholder("name", player -> player.getName().getString());
         registerPlaceholder("displayname", p -> p.getDisplayName().getString());
     }
 
@@ -27,11 +28,15 @@ public class PlaceholderManager {
         return text;
     }
 
-    public static void loadCustomPlaceholders(EnhancedChatTagsConfig config) {
+    public static void loadCustomPlaceholders(ForgeConfigSpec config) {
         // Load custom placeholders from config
-        Map<String, String> customPlaceholders = config.getCustomPlaceholders();
+        Map<String, String> customPlaceholders = EnhancedChatTagsConfig.getCustomPlaceholders();
         for (Map.Entry<String, String> entry : customPlaceholders.entrySet()) {
             registerPlaceholder(entry.getKey(), p -> entry.getValue());
         }
+    }
+
+    public static void registerCustomPlaceholder(String key, String value) {
+        registerPlaceholder(key, p -> value);
     }
 }
