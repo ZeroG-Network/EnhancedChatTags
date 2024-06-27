@@ -4,23 +4,22 @@ license="All Rights Reserved"
 
 [[mods]]
 modId="enhancedchattags"
-version="1.0.0"
+version="1.0.1"
 displayName="EnhancedChatTags"
-updateJSONURL="https://github.com/ZeroG-Network/EnhancedChatTags/raw/main/update.json"
-displayURL="https://github.com/ZeroG-Network/EnhancedChatTags"
+updateJSONURL="https://github.com/YourGitHubUsername/EnhancedChatTags/raw/main/update.json"
+displayURL="https://github.com/YourGitHubUsername/EnhancedChatTags"
 logoFile="enhancedchattags_logo.png"
-credits="Thanks to the Forge and FML team for the modding framework"
-authors="ZeroG Network"
+credits="Thanks to the Forge and FML teams for the modding framework"
+authors="MrWhiteFlamesYT"
 description='''
-EnhancedChatTags is a server-side Minecraft mod that revolutionizes in-game communication. It offers advanced chat formatting and dynamic player tag management, seamlessly integrating with LuckPerms. Customize your server's chat appearance and player displays with ease, enhancing the overall multiplayer experience.
+EnhancedChatTags is a server-side Minecraft mod that revolutionizes in-game communication. It offers advanced chat formatting and dynamic player tag management, seamlessly integrating with LuckPerms and MC2Discord. Customize your server's chat appearance and player displays with ease, enhancing the overall multiplayer experience.
 
 Features:
-- Custom chat formatting
-- Player tags above or below heads
-- LuckPerms integration for prefixes and suffixes
-- Configurable tag positions
-- Color code support
-- Placeholder system for easy customization
+- Custom chat formatting with support for color codes and gradients
+- Player tags above or below names
+- LuckPerms integration for prefix and suffix support
+- MC2Discord compatibility for seamless Discord integration
+- Configurable chat and tag formats via TOML configuration file
 '''
 
 [[dependencies.enhancedchattags]]
@@ -39,10 +38,7 @@ Features:
 
 [[dependencies.enhancedchattags]]
     modId="luckperms"
-    mandatory=true
+    mandatory=false
     versionRange="[5.4,)"
-    ordering="NONE"
+    ordering="AFTER"
     side="SERVER"
-
-[modproperties.enhancedchattags]
-    catalogueItemIcon="minecraft:name_tag"

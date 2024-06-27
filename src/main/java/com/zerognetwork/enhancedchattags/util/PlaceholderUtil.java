@@ -1,20 +1,16 @@
 package com.zerognetwork.enhancedchattags.util;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.function.Function;
+import com.zerognetwork.enhancedchattags.integration.IntegrationManager;
+import net.minecraft.world.entity.player.Player;
 
 public class PlaceholderUtil {
-    private static final Map<String, Function<Object, String>> placeholders = new HashMap<>();
+    public static String replacePlaceholders(String text, Player player, String message) {
+        String prefix = IntegrationManager.getLuckPermsHook().getPrefix(player);
+        String suffix = IntegrationManager.getLuckPermsHook().getSuffix(player);
 
-    public static void registerPlaceholder(String key, Function<Object, String> resolver) {
-        placeholders.put(key, resolver);
-    }
-
-    public static String applyPlaceholders(String text, Object context) {
-        for (Map.Entry<String, Function<Object, String>> entry : placeholders.entrySet()) {
-            text = text.replace("%" + entry.getKey() + "%", entry.getValue().apply(context));
-        }
-        return text;
+        return text.replace("{prefix}", prefix != null ? prefix : "")
+                   .replace("{suffix}", suffix != null ? suffix : "")
+                   .replace("{name}", player.getName().getString())
+                   .replace("{message}", message != null ? message : "");
     }
 }

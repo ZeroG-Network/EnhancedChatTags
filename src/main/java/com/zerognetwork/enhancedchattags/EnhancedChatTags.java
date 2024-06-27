@@ -1,10 +1,13 @@
 package com.zerognetwork.enhancedchattags;
 
-import com.zerognetwork.enhancedchattags.config.EnhancedChatTagsConfig;
-import com.zerognetwork.enhancedchattags.util.LuckPermsCache;
-import com.zerognetwork.enhancedchattags.util.PlaceholderManager;
-import com.zerognetwork.enhancedchattags.util.VersionChecker;
+import com.zerognetwork.enhancedchattags.chat.ChatManager;
+import com.zerognetwork.enhancedchattags.config.ConfigManager;
+import com.zerognetwork.enhancedchattags.integration.IntegrationManager;
+import com.zerognetwork.enhancedchattags.tag.TagManager;
+import com.zerognetwork.enhancedchattags.command.ECTCommand;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.RegisterCommandsEvent;
+import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
@@ -15,32 +18,25 @@ import org.apache.logging.log4j.Logger;
 public class EnhancedChatTags {
     public static final String MOD_ID = "enhancedchattags";
     public static final Logger LOGGER = LogManager.getLogger();
-    public static boolean isLuckPermsLoaded = false;
 
     public EnhancedChatTags() {
-        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setup);
+        IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
+        modEventBus.addListener(this::setup);
+
+        ConfigManager.register();
+        
         MinecraftForge.EVENT_BUS.register(this);
-        EnhancedChatTagsConfig.register();
+        MinecraftForge.EVENT_BUS.addListener(this::onRegisterCommands);
     }
 
     private void setup(final FMLCommonSetupEvent event) {
         LOGGER.info("EnhancedChatTags is setting up.");
-        isLuckPermsLoaded = checkLuckPermsLoaded();
-        if (!isLuckPermsLoaded) {
-            LOGGER.warn("LuckPerms not found. Some features may be limited.");
-        } else {
-            LuckPermsCache.initialize();
-        }
-        PlaceholderManager.loadCustomPlaceholders(EnhancedChatTagsConfig.SPEC);
-        VersionChecker.checkVersions();
+        IntegrationManager.init();
+        ChatManager.init();
+        TagManager.init();
     }
 
-    private boolean checkLuckPermsLoaded() {
-        try {
-            Class.forName("net.luckperms.api.LuckPerms");
-            return true;
-        } catch (ClassNotFoundException e) {
-            return false;
-        }
+    private void onRegisterCommands(RegisterCommandsEvent event) {
+        ECTCommand.register(event.getDispatcher());
     }
 }
