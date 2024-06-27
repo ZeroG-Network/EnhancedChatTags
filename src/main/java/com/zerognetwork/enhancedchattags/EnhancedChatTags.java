@@ -7,7 +7,9 @@ import com.zerognetwork.enhancedchattags.tag.TagManager;
 import com.zerognetwork.enhancedchattags.command.ECTCommand;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegisterCommandsEvent;
+import net.minecraftforge.event.server.ServerStartedEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
@@ -26,17 +28,23 @@ public class EnhancedChatTags {
         ConfigManager.register();
         
         MinecraftForge.EVENT_BUS.register(this);
-        MinecraftForge.EVENT_BUS.addListener(this::onRegisterCommands);
     }
 
     private void setup(final FMLCommonSetupEvent event) {
         LOGGER.info("EnhancedChatTags is setting up.");
-        IntegrationManager.init();
+        IntegrationManager.initLuckPerms();
         ChatManager.init();
         TagManager.init();
     }
 
-    private void onRegisterCommands(RegisterCommandsEvent event) {
+    @SubscribeEvent
+    public void onServerStarted(ServerStartedEvent event) {
+        LOGGER.info("Server started. Initializing MC2Discord integration.");
+        IntegrationManager.initMC2Discord();
+    }
+
+    @SubscribeEvent
+    public void onRegisterCommands(RegisterCommandsEvent event) {
         ECTCommand.register(event.getDispatcher());
     }
 }

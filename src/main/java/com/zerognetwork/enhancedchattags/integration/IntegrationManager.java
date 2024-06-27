@@ -6,10 +6,12 @@ public class IntegrationManager {
     private static LuckPermsHook luckPermsHook;
     private static MC2DiscordHook mc2DiscordHook;
 
-    public static void init() {
+    public static void initLuckPerms() {
         luckPermsHook = new LuckPermsHook();
         luckPermsHook.init();
+    }
 
+    public static void initMC2Discord() {
         mc2DiscordHook = new MC2DiscordHook();
         mc2DiscordHook.init();
     }

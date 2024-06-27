@@ -1,26 +1,26 @@
 package com.zerognetwork.enhancedchattags.integration;
 
 import com.zerognetwork.enhancedchattags.EnhancedChatTags;
+import net.minecraftforge.fml.ModList;
 
 public class MC2DiscordHook {
     private boolean isEnabled = false;
 
     public void init() {
-        // Check if mc2discord is loaded and available
-        try {
-            Class.forName("com.example.mc2discord.MC2Discord");
+        if (ModList.get().isLoaded("mc2discord")) {
             isEnabled = true;
-            EnhancedChatTags.LOGGER.info("MC2Discord integration initialized successfully");
-        } catch (ClassNotFoundException e) {
-            EnhancedChatTags.LOGGER.info("MC2Discord not found, integration disabled");
+            EnhancedChatTags.LOGGER.info("MC2Discord detected. Integration enabled.");
+            // Initialize your MC2Discord integration here
+        } else {
+            EnhancedChatTags.LOGGER.info("MC2Discord not found. Integration disabled.");
         }
     }
 
     public void sendMessageToDiscord(String playerName, String message) {
         if (!isEnabled) return;
         
-        // Implement the actual integration with mc2discord here
-        // This is a placeholder and needs to be replaced with actual mc2discord API calls
+        // Implement the actual integration with MC2Discord here
+        // This is a placeholder and needs to be replaced with actual MC2Discord API calls
         EnhancedChatTags.LOGGER.info("Sending message to Discord: " + playerName + ": " + message);
     }
 }
