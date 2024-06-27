@@ -18,8 +18,12 @@ public class MC2DiscordHook {
     public void sendMessageToDiscord(String playerName, String message) {
         if (!isEnabled) return;
         
-        // Implement the actual integration with MC2Discord here
-        // This is a placeholder and needs to be replaced with actual MC2Discord API calls
-        EnhancedChatTags.LOGGER.info("Sending message to Discord: " + playerName + ": " + message);
+        try {
+            // This is a placeholder. Replace with actual MC2Discord API call
+            // For example: MC2Discord.sendMessage(playerName + ": " + message);
+            EnhancedChatTags.LOGGER.info("Sending message to Discord: " + playerName + ": " + message);
+        } catch (Exception e) {
+            EnhancedChatTags.LOGGER.error("Failed to send message to Discord", e);
+        }
     }
 }

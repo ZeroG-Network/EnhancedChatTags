@@ -1,7 +1,8 @@
 plugins {
     id 'eclipse'
     id 'maven-publish'
-    id 'net.minecraftforge.gradle' version '6.0.+'
+    id 'net.minecraftforge.gradle' version '5.1.+'
+    id 'org.spongepowered.mixin' version '0.7.+'
 }
 
 version = '1.0.1'
@@ -45,27 +46,31 @@ minecraft {
 sourceSets.main.resources { srcDir 'src/generated/resources' }
 
 repositories {
-    maven {
-        name = 'spongepowered-repo'
-        url = 'https://repo.spongepowered.org/maven'
-    }
+    mavenCentral()
+    maven { url = "https://repo.lucko.me/" }
 }
 
 dependencies {
     minecraft 'net.minecraftforge:forge:1.20.1-47.2.0'
-    compileOnly 'net.luckperms:api:5.4'
+    implementation 'net.luckperms:api:5.4'
+    annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
+}
+
+mixin {
+    add sourceSets.main, "enhancedchattags.mixins.json"
 }
 
 jar {
     manifest {
         attributes([
-            "Specification-Title"     : "enhancedchattags",
-            "Specification-Vendor"    : "MrWhiteFlamesYT",
-            "Specification-Version"   : "1",
-            "Implementation-Title"    : project.name,
-            "Implementation-Version"  : project.jar.archiveVersion,
-            "Implementation-Vendor"   : "MrWhiteFlamesYT",
-            "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
+            "Specification-Title": "enhancedchattags",
+            "Specification-Vendor": "zerognetwork",
+            "Specification-Version": "1",
+            "Implementation-Title": project.name,
+            "Implementation-Version": project.jar.archiveVersion,
+            "Implementation-Vendor" : "zerognetwork",
+            "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
+            "MixinConfigs": "enhancedchattags.mixins.json"
         ])
     }
 }
@@ -84,6 +89,7 @@ publishing {
         }
     }
 }
+
 
 tasks.withType(JavaCompile).configureEach {
     options.encoding = 'UTF-8'

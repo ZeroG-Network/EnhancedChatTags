@@ -2,7 +2,7 @@ package com.zerognetwork.enhancedchattags.chat;
 
 import com.zerognetwork.enhancedchattags.config.ConfigManager;
 import com.zerognetwork.enhancedchattags.integration.IntegrationManager;
-import com.zerognetwork.enhancedchattags.util.ColorUtil;
+import com.zerognetwork.enhancedchattags.util.ChatUtil;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.event.ServerChatEvent;
@@ -16,25 +16,11 @@ public class ChatManager {
         ServerPlayer player = event.getPlayer();
         String message = event.getMessage().getString();
 
-        String format = ConfigManager.CHAT_FORMAT.get();
-        String prefix = IntegrationManager.getLuckPermsHook().isAvailable() ? 
-            IntegrationManager.getLuckPermsHook().getPrefix(player) : "";
-        String suffix = IntegrationManager.getLuckPermsHook().isAvailable() ? 
-            IntegrationManager.getLuckPermsHook().getSuffix(player) : "";
-        String name = player.getName().getString();
-
-        String formattedMessage = format
-                .replace("{prefix}", prefix != null ? prefix : "")
-                .replace("{name}", name)
-                .replace("{suffix}", suffix != null ? suffix : "")
-                .replace("{message}", message);
-
-        formattedMessage = ColorUtil.translateColorCodes(formattedMessage);
-
+        String formattedMessage = ChatUtil.formatChatMessage(player, message);
         event.setMessage(Component.literal(formattedMessage));
 
         if (ConfigManager.USE_MC2DISCORD.get()) {
-            IntegrationManager.getMC2DiscordHook().sendMessageToDiscord(name, message);
+            IntegrationManager.getMC2DiscordHook().sendMessageToDiscord(player.getName().getString(), message);
         }
     }
 }

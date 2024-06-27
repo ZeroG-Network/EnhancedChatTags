@@ -38,7 +38,7 @@ Features:
 
 [[dependencies.enhancedchattags]]
     modId="luckperms"
-    mandatory=false
+    mandatory=true
     versionRange="[5.4,)"
     ordering="AFTER"
-    side="SERVER"
+    side="BOTH"

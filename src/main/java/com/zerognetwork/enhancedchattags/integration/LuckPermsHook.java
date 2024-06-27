@@ -6,28 +6,19 @@ import net.luckperms.api.LuckPermsProvider;
 import net.minecraft.server.level.ServerPlayer;
 
 public class LuckPermsHook {
-    private static LuckPerms api;
-    private static boolean initialized = false;
+    private LuckPerms api;
 
-    public static void init() {
-        // Do nothing here, we'll initialize later
-    }
-
-    public static boolean isAvailable() {
-        if (!initialized) {
-            try {
-                api = LuckPermsProvider.get();
-                initialized = true;
-            } catch (IllegalStateException e) {
-                // LuckPerms is not available yet
-                return false;
-            }
+    public void init() {
+        try {
+            api = LuckPermsProvider.get();
+            EnhancedChatTags.LOGGER.info("LuckPerms integration initialized successfully");
+        } catch (IllegalStateException e) {
+            EnhancedChatTags.LOGGER.error("Failed to initialize LuckPerms integration", e);
         }
-        return initialized;
     }
 
-    public static String getPrefix(ServerPlayer player) {
-        if (!isAvailable()) return "";
+    public String getPrefix(ServerPlayer player) {
+        if (api == null) return "";
         try {
             return api.getPlayerAdapter(ServerPlayer.class).getMetaData(player).getPrefix();
         } catch (Exception e) {
@@ -36,8 +27,8 @@ public class LuckPermsHook {
         }
     }
 
-    public static String getSuffix(ServerPlayer player) {
-        if (!isAvailable()) return "";
+    public String getSuffix(ServerPlayer player) {
+        if (api == null) return "";
         try {
             return api.getPlayerAdapter(ServerPlayer.class).getMetaData(player).getSuffix();
         } catch (Exception e) {
