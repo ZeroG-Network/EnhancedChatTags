@@ -3,27 +3,46 @@ package com.zerognetwork.enhancedchattags.integration;
 import com.zerognetwork.enhancedchattags.EnhancedChatTags;
 import net.luckperms.api.LuckPerms;
 import net.luckperms.api.LuckPermsProvider;
-import net.minecraft.world.entity.player.Player;
+import net.minecraft.server.level.ServerPlayer;
 
 public class LuckPermsHook {
-    private LuckPerms api;
+    private static LuckPerms api;
+    private static boolean initialized = false;
 
-    public void init() {
+    public static void init() {
+        // Do nothing here, we'll initialize later
+    }
+
+    public static boolean isAvailable() {
+        if (!initialized) {
+            try {
+                api = LuckPermsProvider.get();
+                initialized = true;
+            } catch (IllegalStateException e) {
+                // LuckPerms is not available yet
+                return false;
+            }
+        }
+        return initialized;
+    }
+
+    public static String getPrefix(ServerPlayer player) {
+        if (!isAvailable()) return "";
         try {
-            api = LuckPermsProvider.get();
-            EnhancedChatTags.LOGGER.info("LuckPerms integration initialized successfully");
-        } catch (IllegalStateException e) {
-            EnhancedChatTags.LOGGER.error("Failed to initialize LuckPerms integration", e);
+            return api.getPlayerAdapter(ServerPlayer.class).getMetaData(player).getPrefix();
+        } catch (Exception e) {
+            EnhancedChatTags.LOGGER.error("Error getting LuckPerms prefix", e);
+            return "";
         }
     }
 
-    public String getPrefix(Player player) {
-        if (api == null) return "";
-        return api.getPlayerAdapter(Player.class).getMetaData(player).getPrefix();
-    }
-
-    public String getSuffix(Player player) {
-        if (api == null) return "";
-        return api.getPlayerAdapter(Player.class).getMetaData(player).getSuffix();
+    public static String getSuffix(ServerPlayer player) {
+        if (!isAvailable()) return "";
+        try {
+            return api.getPlayerAdapter(ServerPlayer.class).getMetaData(player).getSuffix();
+        } catch (Exception e) {
+            EnhancedChatTags.LOGGER.error("Error getting LuckPerms suffix", e);
+            return "";
+        }
     }
 }

@@ -10,7 +10,6 @@ public class MC2DiscordHook {
         if (ModList.get().isLoaded("mc2discord")) {
             isEnabled = true;
             EnhancedChatTags.LOGGER.info("MC2Discord detected. Integration enabled.");
-            // Initialize your MC2Discord integration here
         } else {
             EnhancedChatTags.LOGGER.info("MC2Discord not found. Integration disabled.");
         }

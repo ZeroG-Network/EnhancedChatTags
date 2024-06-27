@@ -1,45 +1,46 @@
 package com.zerognetwork.enhancedchattags.tag;
 
-import com.zerognetwork.enhancedchattags.EnhancedChatTags;
 import com.zerognetwork.enhancedchattags.config.ConfigManager;
+import com.zerognetwork.enhancedchattags.integration.IntegrationManager;
 import com.zerognetwork.enhancedchattags.util.ColorUtil;
-import com.zerognetwork.enhancedchattags.util.PlaceholderUtil;
 import net.minecraft.network.chat.Component;
-import net.minecraft.world.entity.player.Player;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
-@Mod.EventBusSubscriber(modid = EnhancedChatTags.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
+@Mod.EventBusSubscriber(modid = "enhancedchattags", bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class TagManager {
-
-    public static void init() {
-        EnhancedChatTags.LOGGER.info("Initializing TagManager");
-    }
-
     @SubscribeEvent
     public static void onPlayerLoggedIn(PlayerEvent.PlayerLoggedInEvent event) {
-        updatePlayerTag(event.getEntity());
+        if (event.getEntity() instanceof ServerPlayer) {
+            updatePlayerTag((ServerPlayer) event.getEntity());
+        }
     }
 
     @SubscribeEvent
     public static void onPlayerRespawn(PlayerEvent.PlayerRespawnEvent event) {
-        updatePlayerTag(event.getEntity());
+        if (event.getEntity() instanceof ServerPlayer) {
+            updatePlayerTag((ServerPlayer) event.getEntity());
+        }
     }
 
-    private static void updatePlayerTag(Player player) {
-        if (!ConfigManager.ENABLE_TAGS.get()) return;
-
+    private static void updatePlayerTag(ServerPlayer player) {
         String format = ConfigManager.TAG_FORMAT.get();
-        String formattedTag = ColorUtil.translateColorCodes(PlaceholderUtil.replacePlaceholders(format, player, null));
+        String prefix = IntegrationManager.getLuckPermsHook().isAvailable() ? 
+            IntegrationManager.getLuckPermsHook().getPrefix(player) : "";
+        String suffix = IntegrationManager.getLuckPermsHook().isAvailable() ? 
+            IntegrationManager.getLuckPermsHook().getSuffix(player) : "";
+        String name = player.getName().getString();
+
+        String formattedTag = format
+                .replace("{prefix}", prefix != null ? prefix : "")
+                .replace("{name}", name)
+                .replace("{suffix}", suffix != null ? suffix : "");
+
+        formattedTag = ColorUtil.translateColorCodes(formattedTag);
 
         player.setCustomName(Component.literal(formattedTag));
         player.setCustomNameVisible(true);
-
-        if (ConfigManager.TAG_POSITION.get() == ConfigManager.TagPosition.ABOVE) {
-            player.setGlowingTag(true);
-        } else {
-            player.setGlowingTag(false);
-        }
     }
 }
