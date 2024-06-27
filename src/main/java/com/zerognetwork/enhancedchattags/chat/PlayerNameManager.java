@@ -9,7 +9,7 @@ import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
-@Mod.EventBusSubscriber(modId = EnhancedChatTags.MOD_ID)
+@Mod.EventBusSubscriber(modid = EnhancedChatTags.MOD_ID)
 public class PlayerNameManager {
     @SubscribeEvent
     public static void onPlayerNameFormat(PlayerEvent.NameFormat event) {
