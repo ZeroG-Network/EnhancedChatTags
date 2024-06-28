@@ -1,12 +1,13 @@
 package com.zerognetwork.enhancedchattags;
 
+import com.zerognetwork.enhancedchattags.chat.ChatManager;
 import com.zerognetwork.enhancedchattags.config.ConfigManager;
 import com.zerognetwork.enhancedchattags.integration.IntegrationManager;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.server.ServerStartedEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.fml.ModLoadingContext;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.apache.logging.log4j.LogManager;
@@ -23,12 +24,18 @@ public class EnhancedChatTags {
 
         ConfigManager.register();
         MinecraftForge.EVENT_BUS.register(this);
-
-        ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, ConfigManager.COMMON_SPEC);
+        MinecraftForge.EVENT_BUS.register(new ChatManager());
     }
 
     private void setup(final FMLCommonSetupEvent event) {
         LOGGER.info("EnhancedChatTags is setting up.");
-        IntegrationManager.initIntegrations();
+        ChatManager.registerChatType();
+    }
+
+    @SubscribeEvent
+    public void onServerStarted(ServerStartedEvent event) {
+        LOGGER.info("Server started. Initializing integrations.");
+        IntegrationManager.initLuckPerms();
+        IntegrationManager.initMC2Discord();
     }
 }

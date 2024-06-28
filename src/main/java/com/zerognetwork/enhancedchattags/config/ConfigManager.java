@@ -1,10 +1,12 @@
 package com.zerognetwork.enhancedchattags.config;
 
 import net.minecraftforge.common.ForgeConfigSpec;
+import net.minecraftforge.fml.ModLoadingContext;
+import net.minecraftforge.fml.config.ModConfig;
 
 public class ConfigManager {
     public static final ForgeConfigSpec.Builder BUILDER = new ForgeConfigSpec.Builder();
-    public static final ForgeConfigSpec COMMON_SPEC;
+    public static final ForgeConfigSpec SPEC;
 
     public static final ForgeConfigSpec.ConfigValue<String> CHAT_FORMAT;
     public static final ForgeConfigSpec.ConfigValue<String> NAME_FORMAT;
@@ -26,8 +28,10 @@ public class ConfigManager {
                 .define("useMC2Discord", true);
 
         BUILDER.pop();
-        COMMON_SPEC = BUILDER.build();
+        SPEC = BUILDER.build();
     }
 
-    public static void register() {}
+    public static void register() {
+        ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, SPEC);
+    }
 }

@@ -5,12 +5,8 @@ license="All Rights Reserved"
 [[mods]]
 modId="enhancedchattags"
 version="1.0.1"
-displayName="EnhancedChatTags"
-updateJSONURL="https://raw.githubusercontent.com/ZeroG-Network/EnhancedChatTags/main/update.json"
-displayURL="https://github.com/YourGitHubUsername/EnhancedChatTags"
-logoFile="enhancedchattags_logo.png"
-credits="Thanks to the Forge and FML teams for the modding framework"
-authors="MrWhiteFlamesYT"
+displayName="Enhanced Chat Tags"
+authors="ZeroG Network"
 description='''
 EnhancedChatTags is a server-side Minecraft mod that revolutionizes in-game communication. It offers advanced chat formatting and dynamic player tag management, seamlessly integrating with LuckPerms and MC2Discord. Customize your server's chat appearance and player displays with ease, enhancing the overall multiplayer experience.
 
@@ -27,18 +23,25 @@ Features:
     mandatory=true
     versionRange="[47,)"
     ordering="NONE"
-    side="SERVER"
+    side="BOTH"
 
 [[dependencies.enhancedchattags]]
     modId="minecraft"
     mandatory=true
     versionRange="[1.20.1,1.21)"
     ordering="NONE"
-    side="SERVER"
+    side="BOTH"
 
 [[dependencies.enhancedchattags]]
     modId="luckperms"
     mandatory=true
     versionRange="[5.4,)"
     ordering="AFTER"
-    side="BOTH"
+    side="SERVER"
+
+[[dependencies.enhancedchattags]]
+    modId="mc2discord"
+    mandatory=false
+    versionRange="[1.20.1-1.0.1,)"
+    ordering="AFTER"
+    side="SERVER"

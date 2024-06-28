@@ -6,7 +6,10 @@
   "mixins": [
     "ChatMixin"
   ],
+  "client": [],
+  "server": [],
   "injectors": {
     "defaultRequire": 1
-  }
+  },
+  "refmap": "enhancedchattags.refmap.json"
 }
